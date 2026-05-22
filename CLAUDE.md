@@ -27,4 +27,5 @@ Android (NFC/FeliCa 読み取り) → REST API サーバー → Excel Online (Mi
 
 ### Commits
 - コミットは文脈ごとに小さく区切る。
+- コミットメッセージは **日本語** で書く。
 - コミットメッセージには **Why**（なぜその変更をしたか）を記述する。
