@@ -3,8 +3,10 @@
 ## 概要
 
 - 役割: Suicaトランザクションの受信、重複排除、外出先推定、Excel Online書き込み
-- 実装言語/フレームワーク: TBD
-- 認証: TBD（内部ネットワーク限定 or 簡易トークン認証）
+- 実装言語/フレームワーク: Kotlin（Azure Functions）
+- 認証: Azure AD（Microsoft Entra ID）
+  - Android → Functions: MSAL で取得したアクセストークンを Bearer ヘッダーに付与
+  - Functions → Graph API: Managed Identity（シークレット管理不要）
 
 ## エンドポイント
 
@@ -59,6 +61,15 @@ Suica履歴を受信し、Excel Onlineに記録する。
 
 ## 外出先推定ロジック
 
-- TBD: スケジュール参照方法（Outlookカレンダー or ローカル設定ファイル）
-- TBD: 推定不能時のフォールバック値（空文字 or "不明" など）
-- TBD: 推定ルール（時刻×駅 → 外出先のマッピング方式）
+Microsoft Graph API でユーザーのOutlookカレンダーを参照し、利用時刻に重なるイベントの `location` フィールドを外出先とする。
+
+```
+推定手順:
+  1. Graph API で当日のカレンダーイベントを取得
+  2. 出場時刻 (timestamp) に重なるイベントを検索
+  3. 該当イベントの location を destination に設定
+  4. 該当イベントなし or location 未設定 → destination = ""（空文字）
+```
+
+- 複数イベントが重なる場合: 開始時刻が最も近いものを優先
+- 推定不能時のフォールバック: 空文字（""）
