@@ -1,0 +1,9 @@
+# ローカル設定（シークレットを含むためコミットしない）
+local.settings.json
+
+# ビルド成果物
+build/
+.gradle/
+
+# Gradle wrapper の実行バイナリ（プラットフォーム依存）
+gradlew.bat

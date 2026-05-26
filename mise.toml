@@ -1,0 +1,5 @@
+[tools]
+gradle = "8.10"
+java = "21.0.2"
+kotlin = { version = "2.1.21", asset_pattern = "kotlin-compiler-*.zip", bin_path = "kotlinc/bin" }
+maven = "3.9.9"
